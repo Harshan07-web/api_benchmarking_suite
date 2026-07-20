@@ -2,12 +2,12 @@ import requests
 import time 
 
 
-def generate_requests(tot_requests:int,url:str):
+def generate_requests(tot_requests:int,url:str,timeout:int=15):
     result = []
     for i in range(tot_requests):
         try:
             start = time.perf_counter()
-            response = requests.get(url,timeout=15)
+            response = requests.get(url,timeout=timeout)
             end = time.perf_counter()
 
             latency = (end - start) * 1000
@@ -23,11 +23,8 @@ def generate_requests(tot_requests:int,url:str):
             result.append({
                 "status_code" : None,
                 "latency_ms" : None,
-                "success" : None,
-                "error" : e
+                "success" : False,
+                "error" : str(e)
             })
 
     return result
-
-url = "https://jsonplaceholder.typicode.com/posts"
-print(generate_requests(10,url))

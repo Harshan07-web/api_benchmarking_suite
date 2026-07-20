@@ -1,4 +1,6 @@
 from fastapi import APIRouter
+from app.services.load_generator import generate_requests
+from app.services.metrics_service import metrics_calculator
 from app.models.benchmark import BenchmarkRequest, MetricsResult, BenchmarkResponse
 
 router = APIRouter()
@@ -9,7 +11,12 @@ def get_router():
 
 @router.post("/benchmark")
 def benchmark(request: BenchmarkRequest):
+
+    requests = generate_requests(request.total_requests,request.url,request.timeout)
+
+    request_metrics = metrics_calculator(requests=requests)
+
     return {
-        "message": "Input received",
-        "data": request.model_dump()
+        "metrics": request_metrics,
+        "results" : requests
     }
