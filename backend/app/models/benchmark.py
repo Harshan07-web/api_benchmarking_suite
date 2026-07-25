@@ -5,10 +5,12 @@ from typing import Literal
 class BenchmarkRequest(BaseModel):
     url: str
     total_requests: int
+    concurrency : int
     timeout: int = 15
 
 
 class MetricsResult(BaseModel):
+    concurrency : int
     total_requests : float
     successful_requests : float
     failed_requests : float

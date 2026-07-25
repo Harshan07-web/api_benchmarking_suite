@@ -6,7 +6,8 @@ from app.services.metrics_service import metrics_calculator
 async def run_benchmark(request):
     results,duration,rps = await async_call_generate(
         request.total_requests,
-        request.url
+        request.url,
+        request.concurrency
     )
 
     metrics = metrics_calculator(results)
@@ -15,6 +16,7 @@ async def run_benchmark(request):
         "benchmark": {
             "url": request.url,
             "total_requests": request.total_requests,
+            "concurrency" : request.concurrency,
             "duration" : round(duration,2),
             "rps" : round(rps,2)
         },

@@ -3,9 +3,10 @@ import httpx
 import time
 
 
-async def async_call_generate(no_of_requests,url):
-    async with httpx.AsyncClient() as client:
-        task = [async_generate_request(client,url)
+async def async_call_generate(no_of_requests,url,concurrency):
+    async with httpx.AsyncClient(timeout=15) as client:
+        semaphore = asyncio.Semaphore(concurrency)
+        task = [async_generate_request(client,url,semaphore)
                     for _ in range(no_of_requests)
                 ]
         start = time.perf_counter()
@@ -18,13 +19,12 @@ async def async_call_generate(no_of_requests,url):
     return results,duration,rps
     
 
-async def async_generate_request(client:httpx.AsyncClient,url: str):
+async def async_generate_request(client:httpx.AsyncClient,url: str,semaphore):
     try:
-        start = time.perf_counter()
-
-        response = await client.get(url,timeout=15)
-
-        end = time.perf_counter()
+        async with semaphore:
+            start = time.perf_counter()
+            response = await client.get(url)
+            end = time.perf_counter()
 
         latency = (end - start) * 1000
 
