@@ -17,6 +17,11 @@ class MetricsResult(BaseModel):
     success_rate : float
     failure_rate : float
     average_latency: float
+    median_latency : float
+    p50_latency : float
+    p90_latency : float
+    p95_latency : float
+    p99_latency : float
     min_latency: float
     max_latency: float
 

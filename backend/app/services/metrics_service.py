@@ -1,6 +1,6 @@
 
 
-def metrics_calculator(requests: list):
+def metrics_calculator(requests: list,p50,p90,p95,p99):
     if not requests:
         return {
             "total_requests": 0,
@@ -12,6 +12,14 @@ def metrics_calculator(requests: list):
             "min_latency": None,
             "max_latency": None,
         }
+
+    codes = {}
+
+    for req in requests:
+        if req['status_code'] in codes:
+            codes[req['status_code']]+=1
+        else:
+            codes[req['status_code']]=1
 
     total_requests = len(requests)
     total_latency = 0
@@ -52,9 +60,23 @@ def metrics_calculator(requests: list):
         "success_rate": success_rate,
         "failure_rate": failure_rate,
         "average_latency": average_latency,
+        "p50_latency" : p50,
+        "p90_latency" : p90,
+        "p95_latency" : p95,
+        "p99_latency" : p99,
         "minimum_latency": min_latency,
         "maximum_latency": max_latency,
-    }
+    },codes
+
+def calculate_percentile(latency : list,percentile:int):
+    if not latency:
+        return None
+
+    latency = sorted(latency)
+
+    index = int((percentile/100)*len(latency))-1
+
+    return latency[index]
 
 
 if __name__=='__main__':

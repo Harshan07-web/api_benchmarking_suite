@@ -13,3 +13,10 @@ def get_router():
 @router.post("/benchmark")
 async def benchmark(request: BenchmarkRequest):
     return await run_benchmark(request=request)
+
+# {
+#   "url": "https://jsonplaceholder.typicode.com/posts",
+#   "total_requests": 100,
+#   "concurrency": 20,
+#   "timeout": 15
+# }
