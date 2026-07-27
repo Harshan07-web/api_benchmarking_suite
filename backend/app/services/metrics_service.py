@@ -60,7 +60,7 @@ def metrics_calculator(requests: list,p50,p90,p95,p99):
         "success_rate": success_rate,
         "failure_rate": failure_rate,
         "average_latency": average_latency,
-        "p50_latency" : p50,
+        "median_latency" : p50,
         "p90_latency" : p90,
         "p95_latency" : p95,
         "p99_latency" : p99,
