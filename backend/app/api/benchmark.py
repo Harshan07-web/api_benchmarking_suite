@@ -25,10 +25,10 @@ async def benchmark(request: BenchmarkRequest,db: Session=Depends(get_db)):
 #   "timeout": 15
 # }
 
+@router.get("/benchmark/all")
+async def get_all_benchmark_info(db:Session=Depends(get_db)):
+    return get_all_benchmarks(db)
+
 @router.get("/benchmark/{id}")
 async def get_benchmark_info(id:int,db:Session=Depends(get_db)):
     return get_benchmark(db,id)
-
-@router.get("/benchmark/all")
-async def get_benchmark_info(id:int,db:Session=Depends(get_db)):
-    return get_all_benchmarks(db)
